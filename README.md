@@ -20,7 +20,8 @@ This repository contains the Django backend code for the BrainBunny project.
 ### 3. Login Page | Database Linked to SQLite
 -Validates if the Username and Password
 ---
-![Image](https://github.com/user-attachments/assets/686cf810-bfdb-4a16-8f92-dcf2fa263944)
+![login](https://github.com/user-attachments/assets/dff7713e-7930-491c-ac39-e1fe7b4abcda)
+
 
 ### 4. Profile Page
 - user can Upload his or her profile picture.
