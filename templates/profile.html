@@ -1,0 +1,76 @@
+{% extends "./index.html" %}
+
+{% block title %} {{user_profile2.user.username}}'s' Profile - BrainBunny{% endblock title %}
+
+{% block content %}
+
+
+    <h1 class="display-4 text-center my-5">@{{ user_profile2.user.username }}'s Profile</h1>
+
+    <div class="container text-center">
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <button type="button" class="btn btn-outline-primary">Edit</button>
+            <button type="button" class="btn btn-outline-danger">Delete</button>
+        </div>
+    </div>
+
+
+    <!-- UserDetails -->
+    <div class="container text-center my-4">
+        <div class="row row-cols-sm-1 row-cols-md-2">
+            <div class="col-12">
+                <img src="{{ user_profile2.profile_image.url }}" alt="user-profile" height="140" width="140">
+                <h2 class="fs-3">@{{ user_profile2.user.username }}</h2>
+            </div>
+            <div class="col-12">
+                <h2>{{ user_profile2.user.first_name | default:'Full Name Not Available'}} {{user_profile2.user.last_name}}</h2>
+                <p class="fs-5"><i class="bi bi-gender-ambiguous"></i>{{ user_profile2.gender | default:'Gender Not Available'}}</p>
+                <p class="fs-5"><i class="bi bi-geo-alt-fill"></i>{{ user_profile2.location | default:'Location Not Available'}}</p>
+                <p class="fs-5"><i class="bi bi-file-person"></i> {{ user_profile2.bio | default:'Bio Not Available'}}</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <!-- Quiz Details and Performance -->
+    <div class="container">
+        <div class="row row-cols-sm-1 row-cols-md-1 row-cols-lg-2">
+            <div class="col-12  text-center">
+                <h2>Quiz attended by @{{ user_profile2.user.username }}</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Quiz</th>
+                            <th scope="col">Marks</th>
+                            <th scope="col">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Newton's Law</td>
+                            <td>9/10</td>
+                            <td>April 27, 2025 9:00PM</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Newton's Law</td>
+                            <td>9/10</td>
+                            <td>April 27, 2025 9:00PM</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Newton's Law</td>
+                            <td>9/10</td>
+                            <td>April 27, 2025 9:00PM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 text-center">
+                <h3>@{{ user_profile2.user.username }}'s Performance</h3>
+            </div>
+        </div>
+{% endblock content %}        

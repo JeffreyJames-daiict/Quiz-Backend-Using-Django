@@ -1,0 +1,121 @@
+{% extends "index.html" %}
+
+{% block title %}{{quiz.title}} - BrainBunny{% endblock title %}
+
+{% block content %}
+    <h2 class="display-4 text-center my-5">{{quiz.title}}</h2>
+    <p class="fs-4 text-center container ">{{quiz.description}}</p>
+    <div class="container ">
+        <div class="d-flex justify-content-between">
+            <span class="fs-6">{{quiz.created_at}}</span>
+            <span class="fs-6" id="timer"></span>
+        </div>
+
+        {% for message in messages%}
+        <div>
+            <h4 class="text-center text-success">{{message}}</h4>
+        </div>
+        {% endfor %}
+
+        <div class="questions my-3">
+            {% for question in quiz.question_set.all %}
+            <div class="card mb-2 question">
+                <div class="card-header fw-bold">
+                    Question {{forloop.counter}}
+                </div>
+
+                <div class="card-body">
+                    <p class="card-text">{{question.text}}</p>
+                    {% for option in question.choice_set.all  %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" value="{{option.text}}" name="{{option.question.id}}" id="{{option.id}}">
+                        <label class="form-check-label" for="{{option.id}}">
+                            {{option.text}}
+                        </label>
+                        {% if option.is_correct %}
+                        <span class="visually-hidden correct-answer">{{option.text}}</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            <form action="" method="post" id="quiz-form">
+                {% csrf_token %}
+                <!-- hidden input field for score -->
+                <input type="hidden" name="score" value="0" id="user-score">
+
+                <!-- submit button -->
+                <button type="submit" class="btn btn-primary" id = "submit-button">Submit the Quiz</button>
+            </form>
+            
+        </div>
+    </div>
+    
+{% endblock content %}
+
+<script>
+
+    // Elements
+    var submitButton = document.getElementById("submit-button")
+    var timerSpan = document.getElementById("timer");
+    var questions = document.querySelectorAll(".question")
+    var quizform = document.getElementById("quiz-form")
+    var userScoreInput = document.getElementById('user-score')
+
+    quizDuration  = questions.length*60 //Convert into seconds
+    //Update Timer
+    function updateTimer() {
+        var minutes = Math.floor(quizDuration/60)
+        var seconds = quizDuration % 60
+
+        timerSpan.innerText = minute + ":" + seconds
+
+        //Check if the time ended
+        if ( quizDuration <= 0){
+            //Submit the quiz automatically
+            clearTimeout(quizTimerId)
+            submitQuiz()
+        } else{
+            //decrement the timer value by 1s
+            quizDuration--
+        }
+    }
+
+    //Function to submit the quiz
+    function submitQuiz() {
+        //Calculate the score 
+        calculateScore()
+
+        //  Submit the quiz 
+        quiz-form.submit()
+    }
+
+    function calculateScore() {
+        var score = 0
+
+        // Loop through each question
+        questions.forEach(question => {
+            var selectedInput = question.querySelector('input:checked')
+            var correctAnswer = question.querySelector('.correct-answer').innerText
+
+
+            //Check if the anser is correct or not
+            if (selectedInput && selectedInput.value === correctAnswer) {
+                score += 1
+            }
+        })
+
+        //update the hidden input field with the score in the form
+        userScoreInput.value = score
+    }
+    // Check right answer and calculate the score
+
+    //Highlight correct answer while showing the results
+
+    // Attach Event Listener to Submit Button
+    submitButton.addEventListener("click",submitQuiz)
+
+    // Timer Interval
+    quizTimerId = setInterval(updateTimer,1000); //returns an Id number
+</script>    
